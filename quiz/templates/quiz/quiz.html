@@ -1,7 +1,7 @@
 {% extends 'quiz/base.html' %}
 
 {% block content %}
-<h2>Quiz</h2>
+<h2>Викторина!</h2>
 {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
 <form method="post">
     {% csrf_token %}
@@ -20,6 +20,6 @@
         </div>
     </div>
     {% endfor %}
-    <button type="submit" class="btn btn-primary">Submit Answers</button>
+    <button type="submit" class="btn btn-primary">Отправить ответы</button>
 </form>
 {% endblock %}

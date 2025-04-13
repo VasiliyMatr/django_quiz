@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect
+from django.views.generic import DeleteView
+from django.urls import reverse_lazy
+
 from .models import Question, Answer
 from .forms import QuestionForm
 
@@ -14,6 +17,7 @@ def add_question(request):
                 form.cleaned_data['answer1'],
                 form.cleaned_data['answer2'],
                 form.cleaned_data['answer3'],
+                form.cleaned_data['answer4'],
             ]
             correct_index = int(form.cleaned_data['correct_answer']) - 1
             for i, text in enumerate(answers):
@@ -31,33 +35,16 @@ def quiz(request):
     questions = Question.objects.order_by('?')[:5]
 
     if request.method == 'POST':
-        error = None
         answered = {}
         for key in request.POST:
             if key.startswith('question_'):
                 q_id = int(key.split('_')[1])
-                try:
-                    answered[q_id] = int(request.POST[key])
-                except ValueError:
-                    error = "Invalid answer format!"
-
-        if len(answered) != len(questions):
-            error = "Please answer all questions!"
-
-        if error:
-            return render(request, 'quiz/quiz.html', {
-                'questions': questions,
-                'error': error
-            })
+                answered[q_id] = int(request.POST[key])
 
         correct = 0
-        for question in questions:
-            try:
-                answer = Answer.objects.get(id=answered[question.id], question=question)
-                if answer.is_correct:
-                    correct += 1
-            except (Answer.DoesNotExist, KeyError):
-                pass
+        for q_id, a_id in answered.items():
+            if Answer.objects.get(question=q_id, id=a_id).is_correct:
+                correct += 1
 
         return render(request, 'quiz/results.html', {
             'correct': correct,
@@ -65,3 +52,7 @@ def quiz(request):
         })
 
     return render(request, 'quiz/quiz.html', {'questions': questions})
+
+class QuestionDeleteView(DeleteView):
+    model = Question
+    success_url = reverse_lazy('questions_list')

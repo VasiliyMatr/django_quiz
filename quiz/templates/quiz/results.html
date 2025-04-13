@@ -2,28 +2,28 @@
 
 {% block content %}
 <div class="container">
-    <h2 class="mt-4">Quiz Results</h2>
+    <h2 class="mt-4">Результаты</h2>
     <div class="card mt-4">
         <div class="card-body">
-            <h4 class="card-title">Your score:</h4>
+            <h4 class="card-title">Ваш счет:</h4>
             {% widthratio correct total 100 as percent %}
-            <div class="display-4 {% if percent|add:'0' > 80 %}text-success{% else %}text-danger{% endif %}">
-                {{percent}} {{ correct }}/{{ total }}
+            <div class="display-4 {% if percent|add:'0' >= 80 %}text-success{% else %}text-danger{% endif %}">
+                {{ correct }}/{{ total }}
             </div>
             <p class="mt-3">
                 {% if correct == total %}
-                    🎉 Perfect score! Well done!
-                {% elif percent|add:'0' > 80 %}
-                    👍 Good job!
+                    🎉 Вы ответили правильно на все вопросы!
+                {% elif percent|add:'0' >= 80 %}
+                    👍 Отлично!
                 {% else %}
-                    💪 Keep practicing!
+                    💪 Вам есть чему поучиться!
                 {% endif %}
             </p>
             <a href="{% url 'quiz' %}" class="btn btn-primary mt-3">
-                Try Again
+                Попробовать снова
             </a>
             <a href="{% url 'home' %}" class="btn btn-secondary mt-3">
-                Return Home
+                На главную
             </a>
         </div>
     </div>

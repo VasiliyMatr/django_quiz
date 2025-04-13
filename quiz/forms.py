@@ -17,6 +17,13 @@ class QuestionForm(forms.Form):
     answer3 = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+    answer4 = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
     correct_answer = forms.IntegerField(
-        widget=forms.HiddenInput()
+        widget=forms.HiddenInput(),
+        required=True,
+        error_messages={
+            'required': 'Выберите правильный ответ!'
+        }
     )
