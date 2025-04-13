@@ -1,0 +1,31 @@
+{% extends 'quiz/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Список вопросов</h2>
+    
+    <div class="list-group">
+        {% for question in questions %}
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ question.text }}</h5>
+                <div class="answers-list mt-3">
+                    {% for answer in question.answer_set.all %}
+                    <div class="answer-item mb-2 d-flex align-items-center">
+                        <span class="me-2" style="width: 20px">
+                            {% if answer.is_correct %}
+                            <span class="text-success">✓</span>
+                            {% else %}
+                            <span class="text-danger">✗</span>
+                            {% endif %}
+                        </span>
+                        {{ answer.text }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

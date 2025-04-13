@@ -1,0 +1,31 @@
+{% extends 'quiz/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Quiz Results</h2>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4 class="card-title">Your score:</h4>
+            {% widthratio correct total 100 as percent %}
+            <div class="display-4 {% if percent|add:'0' > 80 %}text-success{% else %}text-danger{% endif %}">
+                {{percent}} {{ correct }}/{{ total }}
+            </div>
+            <p class="mt-3">
+                {% if correct == total %}
+                    🎉 Perfect score! Well done!
+                {% elif percent|add:'0' > 80 %}
+                    👍 Good job!
+                {% else %}
+                    💪 Keep practicing!
+                {% endif %}
+            </p>
+            <a href="{% url 'quiz' %}" class="btn btn-primary mt-3">
+                Try Again
+            </a>
+            <a href="{% url 'home' %}" class="btn btn-secondary mt-3">
+                Return Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
